@@ -2,7 +2,6 @@ package com.danilo.blog.manager.service.store;
 
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
-import com.danilo.autoparts.manager.models.*;
 import com.danilo.blog.manager.repository.store.IBlogRepository;
 import com.danilo.blog.manager.repository.store.IUserBlogRepository;
 import com.danilo.blog.manager.repository.store.IUserRepository;

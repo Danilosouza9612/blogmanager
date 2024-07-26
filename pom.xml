@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.danilo</groupId>
-	<artifactId>autoparts.manager</artifactId>
+	<artifactId>blog.manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>blog.manager</name>
-	<description>An application example for blog management</description>
+	<description>An Spring Boot API for blog managment application</description>
 	<url/>
 	<licenses>
 		<license/>
