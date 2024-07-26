@@ -31,7 +31,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
         String subject;
         Optional<User> optional;
         User user;
-        UserDetails userDetails;
+        AppUserDetails userDetails;
         Authentication authentication;
 
         if(authorization!=null) {
@@ -41,7 +41,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
             if (optional.isPresent()) {
                 user = optional.get();
                 userDetails = new AppUserDetails(user);
-                authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                authentication = new AppUsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getId(), null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

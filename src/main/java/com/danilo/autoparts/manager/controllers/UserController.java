@@ -4,8 +4,11 @@ import com.danilo.autoparts.manager.dto.user.UserRequestDTO;
 import com.danilo.autoparts.manager.dto.user.UserResponseDTO;
 import com.danilo.autoparts.manager.models.User;
 import com.danilo.autoparts.manager.service.store.UserService;
+import com.danilo.autoparts.manager.utils.Sorter;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +29,13 @@ public class UserController{
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> list(){
-        return new ResponseEntity<>(StreamSupport.stream(service.list().spliterator(), true)
+    public ResponseEntity<List<UserResponseDTO>> list(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "per_page", defaultValue = "3") int perPage,
+            @RequestParam(value = "sort_column", defaultValue = "created_at") String sortColumn,
+            @RequestParam(value = "sort_direction", defaultValue = "desc") String sortDirection
+    ){
+        return new ResponseEntity<>(StreamSupport.stream(service.list(page, perPage, new Sorter(sortColumn, sortDirection)).spliterator(), true)
                     .map(user -> new UserResponseDTO(user.getId(), user.getName(), user.getEmail(), user.getUsername()))
                     .toList(),
                 HttpStatus.OK

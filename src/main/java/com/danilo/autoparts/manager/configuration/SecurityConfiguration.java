@@ -36,6 +36,9 @@ public class SecurityConfiguration {
                                         .requestMatchers(HttpMethod.DELETE, "/api/users/*").authenticated()
                                         .requestMatchers(HttpMethod.POST, "/api/login/signup").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/api/login/signin").permitAll()
+
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs").authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/api/blogs").authenticated()
                                         .requestMatchers("/error").permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -52,4 +55,5 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
 }

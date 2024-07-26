@@ -5,14 +5,13 @@ import com.danilo.autoparts.manager.exception.ErrorSerialization;
 import com.danilo.autoparts.manager.models.User;
 import com.danilo.autoparts.manager.repository.store.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceNotFoundException;
 
 @Service
 public class UserService extends CrudService<User, Long> {
-    public UserService(@Autowired CrudRepository<User, Long> repository){
+    public UserService(@Autowired IUserRepository repository){
         super(repository);
     }
 

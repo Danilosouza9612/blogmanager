@@ -1,15 +1,13 @@
 package com.danilo.autoparts.manager.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,15 +17,24 @@ public class Blog{
     @GeneratedValue
     private long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String slug;
+
+    @Column(nullable = false)
+    private String description;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "userBlogId.blog")
+    private List<UserBlog> userBlogs;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Page> pages;
 }
