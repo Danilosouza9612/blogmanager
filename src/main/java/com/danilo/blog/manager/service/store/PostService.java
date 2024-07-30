@@ -25,8 +25,8 @@ public class PostService extends CrudService<Post, Long> {
         super(repository);
     }
 
-    public List<Post> list(int page, int perPage, Sorter sorter, String term, Long blogId, Long categoryId){
-        return ((IPostRepository) repository).findAllByParameters(term, blogId, categoryId, PageRequest.of(page, perPage));
+    public List<Post> list(int page, int perPage, Sorter sorter, String term, Long blogId, Long categoryId, Long authorId){
+        return ((IPostRepository) repository).findAllByParameters(term, blogId, categoryId, authorId, PageRequest.of(page, perPage));
     }
 
     @Override

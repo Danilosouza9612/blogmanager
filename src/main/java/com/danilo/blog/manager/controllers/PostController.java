@@ -41,14 +41,17 @@ public class PostController {
             @RequestParam(value = "sort_direction", defaultValue = "desc") String sortDirection,
             @RequestParam(value = "term", required = false) String term,
             @RequestParam(value = "blog_id", required = false) Long blogId,
-            @RequestParam(value = "category_id", required = false) Long categoryId    ){
+            @RequestParam(value = "category_id", required = false) Long categoryId,
+            @RequestParam(value = "author_id", required = false) Long authorId
+    ){
         List<PostResponseDTO> postResponseDTOList = this.postService.list(
                 page,
                 perPage,
                 new Sorter(sortColumn, sortDirection),
                 term,
                 blogId,
-                categoryId
+                categoryId,
+                authorId
         ).stream()
                 .map(this::buildResponseDTOFromInstance)
                 .toList();
