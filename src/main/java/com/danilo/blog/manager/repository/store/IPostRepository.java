@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface IPostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT p FROM Post p WHERE (:term is null or p.content like %:term% or p.title like %:term%) and (:blogId is null or p.blog.id = :blogId) and (:categoryId is null or p.category.id = :categoryId) and(:authorId is null or p.author.id = :authorId")
+    @Query("SELECT p FROM Post p WHERE (:term is null or p.content like %:term% or p.title like %:term%) and (:blogId is null or p.blog.id = :blogId) and (:categoryId is null or p.category.id = :categoryId) and(:authorId is null or p.author.id = :authorId)")
     List<Post> findAllByParameters(
             @Param("term") String term,
             @Param("blogId") Long blogId,

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @RestController
@@ -52,21 +53,28 @@ public class UserController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable("id") long id, @RequestBody @Valid UserRequestDTO user) throws InstanceNotFoundException {
-        User userToUpdate = new User();
-        userToUpdate.setId(id);
-        userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setName(user.getName());
-        userToUpdate.setUsername(user.getUsername());
-
-        User updatedUser = service.update(id, userToUpdate);
-        return new ResponseEntity<>(new UserResponseDTO(updatedUser.getId(), updatedUser.getName(), updatedUser.getEmail(), updatedUser.getUsername()), HttpStatus.OK);
+    public ResponseEntity<UserResponseDTO> update(@PathVariable("id") long id, @RequestBody @Valid UserRequestDTO userRequestDTO) throws InstanceNotFoundException {
+        Optional<User> userOptional = service.read(id);
+        User userToUpdate;
+        if(userOptional.isPresent()){
+            userToUpdate = userOptional.get();
+            setUserFromDTO(userToUpdate, userRequestDTO);
+            User updatedUser = service.update(userToUpdate);
+            return new ResponseEntity<>(new UserResponseDTO(updatedUser.getId(), updatedUser.getName(), updatedUser.getEmail(), updatedUser.getUsername()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id){
         service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void setUserFromDTO(User user, UserRequestDTO userRequestDTO){
+        user.setName(userRequestDTO.getName());
+        user.setUsername(userRequestDTO.getUsername());
+        user.setEmail(userRequestDTO.getEmail());
     }
 
 }

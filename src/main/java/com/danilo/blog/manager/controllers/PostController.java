@@ -1,14 +1,13 @@
 package com.danilo.blog.manager.controllers;
 
 import com.danilo.blog.manager.dto.DisplayDTO;
-import com.danilo.blog.manager.dto.post.PostCategoryResponseDTO;
-import com.danilo.blog.manager.dto.post.PostRequestCreateDTO;
-import com.danilo.blog.manager.dto.post.PostRequestDTO;
-import com.danilo.blog.manager.dto.post.PostResponseDTO;
+import com.danilo.blog.manager.dto.post.*;
 import com.danilo.blog.manager.models.Post;
+import com.danilo.blog.manager.models.Tag;
 import com.danilo.blog.manager.service.store.BlogService;
 import com.danilo.blog.manager.service.store.CategoryService;
 import com.danilo.blog.manager.service.store.PostService;
+import com.danilo.blog.manager.service.store.TagService;
 import com.danilo.blog.manager.utils.Sorter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceNotFoundException;
 import java.util.List;
-import java.util.stream.StreamSupport;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -32,6 +31,9 @@ public class PostController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private TagService tagService;
 
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> list(
@@ -78,14 +80,21 @@ public class PostController {
     }
 
     @PreAuthorize("permissionByInstance(@policyByPost, #id, 'BLOG_ADMIN')")
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<PostResponseDTO> update(@PathVariable("id") long id, @RequestBody @Valid PostRequestDTO postRequestDTO) throws InstanceNotFoundException {
-        return new ResponseEntity<>(
-                this.buildResponseDTOFromInstance(
-                        this.postService.update(id, this.buildInstanceFromRequestDTO(postRequestDTO))
-                ),
-                HttpStatus.OK
-        );
+        Optional<Post> postOptional = postService.read(id);
+        Post post;
+        if(postOptional.isPresent()){
+            post = postOptional.get();
+            this.setPostFromDTO(post, postRequestDTO);
+            return new ResponseEntity<>(
+                    this.buildResponseDTOFromInstance(
+                            this.postService.update(post)
+                    ),
+                    HttpStatus.OK
+            );
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("permissionByInstance(@policyByPost, #id, 'BLOG_ADMIN')")
@@ -95,6 +104,13 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    private void setPostFromDTO(Post post, PostRequestDTO postRequestDTO){
+        post.setTitle(postRequestDTO.getTitle());
+        post.setContent(postRequestDTO.getContent());
+        post.setTags(postRequestDTO.getTags().stream().map(this::tagMapperFromDto).toList());
+        post.setCategory(this.categoryService.getReferenceById(postRequestDTO.getCategoryId()));
+    }
+
     private PostResponseDTO buildResponseDTOFromInstance(Post post){
         return new PostResponseDTO(
                 post.getTitle(),
@@ -102,17 +118,9 @@ public class PostController {
                 new DisplayDTO(post.getCategory().getId(), post.getCategory().getName()),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
-                new DisplayDTO(post.getAuthor().getId(), post.getAuthor().getName())
+                new DisplayDTO(post.getAuthor().getId(), post.getAuthor().getName()),
+                post.getTags().stream().map(this::dtoMapperFromTag).toList()
         );
-    }
-
-    private Post buildInstanceFromRequestDTO(PostRequestDTO postRequestDTO){
-        Post post = new Post();
-        post.setTitle(postRequestDTO.getTitle());
-        post.setContent(postRequestDTO.getContent());
-        post.setCategory(this.categoryService.getReferenceById(postRequestDTO.getCategoryId()));
-
-        return post;
     }
 
     private Post buildPostFromPostRequestCreateDTO(PostRequestCreateDTO dto){
@@ -121,7 +129,16 @@ public class PostController {
         post.setContent(dto.getContent());
         post.setBlog(this.blogService.getReferenceById(dto.getBlogId()));
         post.setCategory(this.categoryService.getReferenceById(dto.getCategoryId()));
+        post.setTags(dto.getTags().stream().map(this::tagMapperFromDto).toList());
 
         return post;
+    }
+
+    private Tag tagMapperFromDto(PostCreateTagDTO postCreateTagDTO){
+        return postCreateTagDTO.getId()==null ? new Tag(postCreateTagDTO.getName()) : tagService.getReferenceById(postCreateTagDTO.getId());
+    }
+
+    private DisplayDTO dtoMapperFromTag(Tag tag){
+        return new DisplayDTO(tag.getId(), tag.getName());
     }
 }

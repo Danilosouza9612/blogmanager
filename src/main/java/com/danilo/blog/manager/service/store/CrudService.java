@@ -4,7 +4,6 @@ import com.danilo.blog.manager.utils.Sorter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.management.InstanceNotFoundException;
 import java.util.Optional;
 
 public abstract class CrudService<T, ID>{
@@ -25,11 +24,8 @@ public abstract class CrudService<T, ID>{
         return this.repository.save(instance);
     }
 
-    public T update(ID id, T instance) throws InstanceNotFoundException {
-        if(this.repository.existsById(id)){
-            return this.repository.save(instance);
-        }
-        throw new InstanceNotFoundException();
+    public T update(T instance) {
+        return this.repository.save(instance);
     }
 
     public void deleteById(ID id){

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class UserBlog {
+public class UserBlog{
     @EmbeddedId
     private UserBlogId userBlogId;
 

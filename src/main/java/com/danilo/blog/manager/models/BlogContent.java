@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class BlogContent {
+public abstract class BlogContent{
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Column(length = 255, nullable = false)
     private String title;

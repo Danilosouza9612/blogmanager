@@ -39,7 +39,14 @@ public class PageController {
     @PreAuthorize("permissionByInstance(@policyByPage, #id, 'BLOG_ADMIN')")
     @PutMapping
     public ResponseEntity<BlogContentRequestDTO> update(@PathVariable("id") long id, @RequestBody @Valid BlogContentRequestDTO blogContentDTO) throws InstanceNotFoundException {
-        return new ResponseEntity<>(this.buildDtoFromPage(this.service.update(id, this.buildPageFromDTO(blogContentDTO))), HttpStatus.CREATED);
+        Optional<Page> pageOptional = service.read(id);
+        Page page;
+        if(pageOptional.isPresent()){
+            page = pageOptional.get();
+            this.setPageFromDto(pageOptional.get(), blogContentDTO);
+            return new ResponseEntity<>(this.buildDtoFromPage(this.service.update(page)), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("permissionByInstance(@policyByPage, #id, 'BLOG_ADMIN')")
@@ -73,5 +80,10 @@ public class PageController {
 
     private BlogContentResponseDTO buildResponseDtoFromPage(Page page){
         return new BlogContentResponseDTO(page.getId(), page.getTitle(), page.getContent());
+    }
+
+    private void setPageFromDto(Page page, BlogContentRequestDTO blogContentRequestDTO){
+        page.setTitle(blogContentRequestDTO.getTitle());
+        page.setContent(blogContentRequestDTO.getContent());
     }
 }

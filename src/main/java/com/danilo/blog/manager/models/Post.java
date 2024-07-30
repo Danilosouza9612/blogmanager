@@ -1,10 +1,10 @@
 package com.danilo.blog.manager.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,4 +15,14 @@ public class Post extends BlogContent{
 
     @ManyToOne
     private User author;
+
+    @ManyToMany(
+            cascade = {CascadeType.PERSIST}
+    )
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 }

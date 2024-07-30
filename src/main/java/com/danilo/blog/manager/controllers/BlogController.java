@@ -61,12 +61,17 @@ public class BlogController {
     @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
     @PutMapping
     public ResponseEntity<BlogResponseDTO> update(@PathVariable("id") long id, @RequestBody BlogRequestDTO blogRequestDTO) throws InstanceNotFoundException {
-        Blog blog = new Blog();
-        blog.setName(blogRequestDTO.getName());
-        blog.setDescription(blogRequestDTO.getDescription());
-        blog.setSlug(blogRequestDTO.getSlug());
+        Optional<Blog> blogOptional = service.read(id);
+        Blog blog;
+        if(blogOptional.isPresent()) {
+            blog = blogOptional.get();
+            blog.setName(blogRequestDTO.getName());
+            blog.setDescription(blogRequestDTO.getDescription());
+            blog.setSlug(blogRequestDTO.getSlug());
 
-        return new ResponseEntity<>(this.buildBlogResponseDTO(service.update(id, blog)), HttpStatus.OK);
+            return new ResponseEntity<>(this.buildBlogResponseDTO(service.update(blog)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")

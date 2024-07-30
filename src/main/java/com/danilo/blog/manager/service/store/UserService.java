@@ -22,9 +22,9 @@ public class UserService extends CrudService<User, Long> {
     }
 
     @Override
-    public User update(Long id, User user) throws InstanceNotFoundException {
+    public User update(User user){
         this.throwUniqueBusinessRuleViolationExceptionIfUsernameIsNotUnique(user);
-        return super.update(id, user);
+        return super.update(user);
     }
 
     private boolean usernameExists(String username){

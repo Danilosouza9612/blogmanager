@@ -8,10 +8,10 @@ import lombok.*;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"blog_id", "name"}))
 @NoArgsConstructor
-public class Category {
+public class Category{
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Blog blog;

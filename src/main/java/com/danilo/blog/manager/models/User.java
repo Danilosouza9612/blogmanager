@@ -15,7 +15,7 @@ import java.util.List;
 public class User{
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

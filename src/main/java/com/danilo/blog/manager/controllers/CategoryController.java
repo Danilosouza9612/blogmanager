@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceNotFoundException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -53,18 +54,23 @@ public class CategoryController {
     @PreAuthorize("permissionByInstance(@policyByCategory, #id, 'BLOG_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> update(@PathVariable("id") long id, @RequestBody @Valid CategoryRequestDTO categoryRequestDTO) throws InstanceNotFoundException {
-        Category category = this.service.update(
-                id,
-                new Category(categoryRequestDTO.getName())
-        );
+        Optional<Category> categoryOptional = this.service.read(id);
+        if(categoryOptional.isPresent()){
+            Category category = categoryOptional.get();
+            category.setName(categoryRequestDTO.getName());
+            category = this.service.update(
+                    category
+            );
 
-        return new ResponseEntity<>(
-                new CategoryResponseDTO(
-                        category.getId(),
-                        category.getName()
-                ),
-                HttpStatus.OK
-        );
+            return new ResponseEntity<>(
+                    new CategoryResponseDTO(
+                            category.getId(),
+                            category.getName()
+                    ),
+                    HttpStatus.OK
+            );
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("permissionByInstance(@policyByCategory, #id, 'BLOG_ADMIN')")

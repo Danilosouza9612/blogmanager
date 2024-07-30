@@ -3,6 +3,7 @@ package com.danilo.blog.manager.dto.post;
 import com.danilo.blog.manager.dto.DisplayDTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record PostResponseDTO(
         String title,
@@ -10,6 +11,7 @@ public record PostResponseDTO(
         DisplayDTO category,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        DisplayDTO author
+        DisplayDTO author,
+        List<DisplayDTO> tags
 ) {
 }
