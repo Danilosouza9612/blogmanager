@@ -1,46 +1,38 @@
 package com.danilo.blog.manager.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-public class User{
+@AllArgsConstructor
+@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class BlogContent {
     @Id
     @GeneratedValue
     private long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(length = 255, nullable = false)
+    private String title;
 
-    @Column(nullable = false)
-    private String email;
+    @Column(columnDefinition = "text", nullable = false)
+    private String content;
 
-    @Column(nullable = false, unique = true, length = 20)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @OneToMany(mappedBy = "userBlogId.user")
-    private List<UserBlog> userBlogs;
-
-    @Enumerated(EnumType.ORDINAL)
-    private UserRole role;
+    @ManyToOne
+    private Blog blog;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
 }
-
-

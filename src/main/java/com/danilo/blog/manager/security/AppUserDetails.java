@@ -1,9 +1,13 @@
 package com.danilo.blog.manager.security;
 
+import com.danilo.blog.manager.models.Blog;
 import com.danilo.blog.manager.models.User;
+import com.danilo.blog.manager.models.UserRole;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.authentication.jaas.JaasGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -24,7 +28,7 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
     @Override

@@ -8,11 +8,16 @@ import com.danilo.blog.manager.models.Blog;
 import com.danilo.blog.manager.service.store.BlogService;
 import com.danilo.blog.manager.utils.Sorter;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.InstanceNotFoundException;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @RestController
@@ -22,7 +27,7 @@ public class BlogController {
     private BlogService service;
 
     @GetMapping
-    private ResponseEntity<Iterable<BlogResponseDTO>> list(
+    public ResponseEntity<Iterable<BlogResponseDTO>> list(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "per_page", defaultValue = "3") int perPage,
             @RequestParam(value = "sort_column", defaultValue = "createdAt") String sortColumn,
@@ -36,7 +41,7 @@ public class BlogController {
     }
 
     @PostMapping
-    private ResponseEntity<Blog> create(@Valid @RequestBody BlogRequestDTO blogDTO){
+    public ResponseEntity<Blog> create(@Valid @RequestBody BlogRequestDTO blogDTO){
         Blog blog = new Blog();
 
         blog.setName(blogDTO.getName());
@@ -44,6 +49,32 @@ public class BlogController {
         blog.setDescription(blogDTO.getDescription());
 
         return new ResponseEntity<>(service.create(blog), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogResponseDTO> show(@PathVariable("id") long id){
+        return service.read(id).map(
+                blog -> new ResponseEntity<>(this.buildBlogResponseDTO(blog), HttpStatus.OK)
+        ).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PutMapping
+    public ResponseEntity<BlogResponseDTO> update(@PathVariable("id") long id, @RequestBody BlogRequestDTO blogRequestDTO) throws InstanceNotFoundException {
+        Blog blog = new Blog();
+        blog.setName(blogRequestDTO.getName());
+        blog.setDescription(blogRequestDTO.getDescription());
+        blog.setSlug(blogRequestDTO.getSlug());
+
+        return new ResponseEntity<>(this.buildBlogResponseDTO(service.update(id, blog)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @DeleteMapping
+    public ResponseEntity<?> delete(@PathVariable("id") long id){
+        service.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private BlogResponseDTO buildBlogResponseDTO(Blog blog){

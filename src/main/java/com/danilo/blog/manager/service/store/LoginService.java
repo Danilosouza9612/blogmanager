@@ -3,6 +3,7 @@ package com.danilo.blog.manager.service.store;
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
 import com.danilo.blog.manager.models.User;
+import com.danilo.blog.manager.models.UserRole;
 import com.danilo.blog.manager.repository.store.IUserRepository;
 import com.danilo.blog.manager.security.AppUserDetails;
 import com.danilo.blog.manager.security.JwtService;
@@ -30,6 +31,7 @@ public class LoginService {
         this.throwUniqueBusinessRuleViolationExceptionIfUsernameIsNotUnique(user);
         hashedPassword = encoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
+        user.setRole(UserRole.REGULAR);
         return repository.save(user);
     }
 

@@ -37,4 +37,10 @@ public class Blog{
 
     @OneToMany(mappedBy = "blog")
     private List<Page> pages;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Category> categories;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Post> posts;
 }

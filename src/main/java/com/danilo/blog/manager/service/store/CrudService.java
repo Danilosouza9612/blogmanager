@@ -17,7 +17,7 @@ public abstract class CrudService<T, ID>{
         return this.repository.findAll(PageRequest.of(page, perPage, sorter.getSort()));
     }
 
-    public Optional<T> show(ID id){
+    public Optional<T> read(ID id){
         return this.repository.findById(id);
     }
 
@@ -32,7 +32,13 @@ public abstract class CrudService<T, ID>{
         throw new InstanceNotFoundException();
     }
 
-    public void delete(ID id){
+    public void deleteById(ID id){
         this.repository.deleteById(id);
+    }
+
+    public void delete(T instance){ this.repository.delete(instance);}
+
+    public T getReferenceById(ID id){
+        return this.repository.getReferenceById(id);
     }
 }

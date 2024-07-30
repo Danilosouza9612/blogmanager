@@ -23,7 +23,7 @@ public class UserController{
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> show(@PathVariable("id") long id){
-        return service.show(id).map(user -> new ResponseEntity<>(new UserResponseDTO(user.getId(), user.getName(), user.getEmail(), user.getUsername()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return service.read(id).map(user -> new ResponseEntity<>(new UserResponseDTO(user.getId(), user.getName(), user.getEmail(), user.getUsername()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
@@ -65,7 +65,7 @@ public class UserController{
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id){
-        service.delete(id);
+        service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

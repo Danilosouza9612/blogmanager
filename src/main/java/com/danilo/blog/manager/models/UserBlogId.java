@@ -16,4 +16,11 @@ public class UserBlogId implements Serializable {
 
     @ManyToOne
     private Blog blog;
+
+    public UserBlogId(){}
+
+    public UserBlogId(User user, Blog blog){
+        this.user = user;
+        this.blog = blog;
+    }
 }
