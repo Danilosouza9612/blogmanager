@@ -15,8 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.InstanceNotFoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -80,6 +83,27 @@ public class BlogController {
         service.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PostMapping("/{id}/uploadFile")
+    public ResponseEntity<String> uploadFile(@PathVariable("id") long id, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        Optional<Blog> blogOptional = service.read(id);
+        if(blogOptional.isPresent()){
+            return new ResponseEntity<>(service.uploadFile(blogOptional.get(), multipartFile), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @DeleteMapping("/{id}/deleteFile/{identifier}")
+    public ResponseEntity<?> deleteFile(@PathVariable("id") long id, @PathVariable("identifier") String identifier){
+        Optional<Blog> blogOptional = service.read(id);
+        if(blogOptional.isPresent()){
+            service.deleteFile(blogOptional.get(), identifier);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     private BlogResponseDTO buildBlogResponseDTO(Blog blog){

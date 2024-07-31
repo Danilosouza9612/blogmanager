@@ -14,8 +14,12 @@ services:
       - SPRING_PROFILES_ACTIVE=local
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    dns:
+      - 168.0.0.20
     networks:
-      - app-network
+      - applocal
     depends_on:
       - mysql_db
   mysql_db:
@@ -27,10 +31,24 @@ services:
     volumes:
       - autoparts-db:/var/lib/mysql
     networks:
-      - app-network
+      - applocal
+  local_stack:
+    image: localstack/localstack:3.5.0
+    ports:
+      - 4566:4566
+      - 4571:4571
+    environment:
+      - SERVICES=sns, sqs, s3, dynamodb
+      - AWS_SECRET_KEY=test
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    networks:
+      applocal:
+        ipv4_address: 168.0.0.20
 volumes:
   autoparts-db:
 networks:
-  app-network:
-
-
+  applocal:
+    ipam:
+      config:
+        - subnet: 168.0.0.0/24

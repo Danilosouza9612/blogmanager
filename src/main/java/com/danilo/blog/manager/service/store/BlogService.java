@@ -2,6 +2,7 @@ package com.danilo.blog.manager.service.store;
 
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
+import com.danilo.blog.manager.repository.file.IStorageRepository;
 import com.danilo.blog.manager.repository.store.IBlogRepository;
 import com.danilo.blog.manager.repository.store.IUserBlogRepository;
 import com.danilo.blog.manager.repository.store.IUserRepository;
@@ -15,7 +16,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +33,9 @@ public class BlogService extends CrudService<Blog, Long> {
 
     @Autowired
     private IUserBlogRepository iUserBlogRepository;
+
+    @Autowired
+    private IStorageRepository storageRepository;
 
     @Autowired
     public BlogService(IBlogRepository repository){
@@ -56,6 +63,14 @@ public class BlogService extends CrudService<Blog, Long> {
         iUserBlogRepository.save(userBlog);
 
         return createdBlog;
+    }
+
+    public String uploadFile(Blog blog, MultipartFile file) throws IOException {
+        return storageRepository.upload(blog, file);
+    }
+
+    public void deleteFile(Blog blog, String identifier){
+        storageRepository.delete(blog, identifier);
     }
 
     private boolean slugExists(String username){

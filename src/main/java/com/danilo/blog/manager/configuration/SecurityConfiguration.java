@@ -1,5 +1,7 @@
 package com.danilo.blog.manager.configuration;
 
+import com.danilo.blog.manager.repository.file.IStorageRepository;
+import com.danilo.blog.manager.repository.file.S3StorageRepository;
 import com.danilo.blog.manager.security.AppMethodSecurityExpressionHandler;
 import com.danilo.blog.manager.security.UserAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,9 @@ public class SecurityConfiguration {
 
                                         .requestMatchers(HttpMethod.GET, "/api/blogs").authenticated()
                                         .requestMatchers(HttpMethod.POST, "/api/blogs").authenticated()
-                                        .requestMatchers(HttpMethod.GET, "/api/blogs/*").authenticated()
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs/{id}").authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/api/blogs/{id}/uploadFile").authenticated()
+                                        .requestMatchers(HttpMethod.DELETE, "/api/blogs/{id}/deleteFile/{identifier}").authenticated()
 
                                         .requestMatchers(HttpMethod.GET, "/api/pages/*").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/api/pages").authenticated()
