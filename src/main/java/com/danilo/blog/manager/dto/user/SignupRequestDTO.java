@@ -29,8 +29,8 @@ public class SignupRequestDTO {
     @NotBlank
     private String confirmPassword;
 
-    @AssertTrue(message = "Senha e confirmação de senha devem ser iguais")
-    public boolean confirmPassword(){
+    @AssertTrue(message = "Password and confirm password must be equal")
+    public boolean isPasswordEqualsToConfirmPassword(){
         return password.equals(confirmPassword);
     }
 }

@@ -1,5 +1,6 @@
 package com.danilo.blog.manager.service.store;
 
+import com.danilo.blog.manager.dto.user.TokenResponseDTO;
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
 import com.danilo.blog.manager.models.User;
@@ -35,7 +36,7 @@ public class LoginService {
         return repository.save(user);
     }
 
-    public String signin(User user){
+    public TokenResponseDTO signin(User user){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );

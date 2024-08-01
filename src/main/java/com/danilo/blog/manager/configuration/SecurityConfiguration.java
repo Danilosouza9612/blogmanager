@@ -46,9 +46,9 @@ public class SecurityConfiguration {
                                         .requestMatchers(HttpMethod.POST, "/api/login/signup").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/api/login/signin").permitAll()
 
-                                        .requestMatchers(HttpMethod.GET, "/api/blogs").authenticated()
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs/{id}").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/api/blogs").authenticated()
-                                        .requestMatchers(HttpMethod.GET, "/api/blogs/{id}").authenticated()
                                         .requestMatchers(HttpMethod.POST, "/api/blogs/{id}/uploadFile").authenticated()
                                         .requestMatchers(HttpMethod.DELETE, "/api/blogs/{id}/deleteFile/{identifier}").authenticated()
 

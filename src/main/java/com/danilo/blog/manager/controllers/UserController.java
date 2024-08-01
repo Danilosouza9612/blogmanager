@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceNotFoundException;
@@ -26,12 +27,12 @@ public class UserController{
     public ResponseEntity<UserResponseDTO> show(@PathVariable("id") long id){
         return service.read(id).map(user -> new ResponseEntity<>(new UserResponseDTO(user.getId(), user.getName(), user.getEmail(), user.getUsername()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
+    @PreAuthorize("hasAuthority('ROOT')")
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> list(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "per_page", defaultValue = "3") int perPage,
-            @RequestParam(value = "sort_column", defaultValue = "created_at") String sortColumn,
+            @RequestParam(value = "sort_column", defaultValue = "createdAt") String sortColumn,
             @RequestParam(value = "sort_direction", defaultValue = "desc") String sortDirection
     ){
         return new ResponseEntity<>(StreamSupport.stream(service.list(page, perPage, new Sorter(sortColumn, sortDirection)).spliterator(), true)
@@ -41,6 +42,7 @@ public class UserController{
         );
     }
 
+    @PreAuthorize("hasAuthority('ROOT')")
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserRequestDTO user){
         User userToCreate = new User();
@@ -52,6 +54,7 @@ public class UserController{
         return new ResponseEntity<>(new UserResponseDTO(createdUser.getId(), createdUser.getName(), createdUser.getEmail(), createdUser.getUsername()), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ROOT')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> update(@PathVariable("id") long id, @RequestBody @Valid UserRequestDTO userRequestDTO) throws InstanceNotFoundException {
         Optional<User> userOptional = service.read(id);
@@ -65,6 +68,7 @@ public class UserController{
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasAuthority('ROOT')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id){
         service.deleteById(id);
