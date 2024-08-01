@@ -1,5 +1,3 @@
-![Alt text](relative%20path/to/img.jpg?raw=true "Blog architecture")
-
 An API Spring Boot blog managment application. You could create blogs with pages, and you could make posts with uploaded images for it. Posts are categorized and taggable. 
 Images are storaged in Amazon S3. In local development, the application uses LocalStack to simulate Amazon S3 storage.
 
