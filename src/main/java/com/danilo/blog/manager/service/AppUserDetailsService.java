@@ -1,6 +1,6 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import com.danilo.blog.manager.security.AppUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

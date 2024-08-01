@@ -1,8 +1,8 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.models.Post;
-import com.danilo.blog.manager.repository.store.IPostRepository;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IPostRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import com.danilo.blog.manager.security.AppUsernamePasswordAuthenticationToken;
 import com.danilo.blog.manager.utils.Sorter;
 import org.springframework.beans.factory.annotation.Autowired;

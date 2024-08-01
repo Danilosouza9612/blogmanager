@@ -5,7 +5,7 @@ import com.danilo.blog.manager.dto.user.SignupRequestDTO;
 import com.danilo.blog.manager.dto.user.SignupResponseDTO;
 import com.danilo.blog.manager.dto.user.TokenResponseDTO;
 import com.danilo.blog.manager.models.User;
-import com.danilo.blog.manager.service.store.LoginService;
+import com.danilo.blog.manager.service.LoginService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

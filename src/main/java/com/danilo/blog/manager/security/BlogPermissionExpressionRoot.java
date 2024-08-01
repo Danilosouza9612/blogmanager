@@ -1,19 +1,16 @@
 package com.danilo.blog.manager.security;
 
-import com.danilo.blog.manager.models.User;
 import com.danilo.blog.manager.models.UserBlogRole;
 import com.danilo.blog.manager.models.UserRole;
 import com.danilo.blog.manager.policy.BloggablePolicy;
 import com.danilo.blog.manager.policy.PolicyByBlog;
 import com.danilo.blog.manager.policy.PolicyByInstance;
-import com.danilo.blog.manager.service.store.UserBlogService;
+import com.danilo.blog.manager.service.UserBlogService;
 import lombok.Setter;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.function.Supplier;
 
 public class BlogPermissionExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
     @Setter

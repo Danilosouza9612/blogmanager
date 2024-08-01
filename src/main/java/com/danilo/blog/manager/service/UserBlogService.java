@@ -1,11 +1,11 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.models.UserBlog;
 import com.danilo.blog.manager.models.UserBlogId;
 import com.danilo.blog.manager.models.UserBlogRole;
-import com.danilo.blog.manager.repository.store.IBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

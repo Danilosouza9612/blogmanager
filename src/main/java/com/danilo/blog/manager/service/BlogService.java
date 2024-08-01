@@ -1,11 +1,11 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
 import com.danilo.blog.manager.repository.file.IStorageRepository;
-import com.danilo.blog.manager.repository.store.IBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import com.danilo.blog.manager.security.AppUsernamePasswordAuthenticationToken;
 import com.danilo.blog.manager.models.Blog;
 import com.danilo.blog.manager.models.UserBlog;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

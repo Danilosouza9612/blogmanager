@@ -1,7 +1,7 @@
 package com.danilo.blog.manager.security;
 
 import com.danilo.blog.manager.models.User;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

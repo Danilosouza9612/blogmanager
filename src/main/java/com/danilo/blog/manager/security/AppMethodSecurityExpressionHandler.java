@@ -1,8 +1,7 @@
 package com.danilo.blog.manager.security;
 
-import com.danilo.blog.manager.service.store.UserBlogService;
+import com.danilo.blog.manager.service.UserBlogService;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.context.ApplicationContext;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;

@@ -2,7 +2,7 @@ package com.danilo.blog.manager.dataLoader;
 
 import com.danilo.blog.manager.models.User;
 import com.danilo.blog.manager.models.UserRole;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

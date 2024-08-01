@@ -2,11 +2,10 @@ package com.danilo.blog.manager.policy;
 
 import com.danilo.blog.manager.models.UserBlogId;
 import com.danilo.blog.manager.models.UserBlogRole;
-import com.danilo.blog.manager.repository.store.IBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserBlogRepository;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 @Component

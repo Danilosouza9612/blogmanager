@@ -1,13 +1,11 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.exception.BusinessRuleViolationException;
 import com.danilo.blog.manager.exception.ErrorSerialization;
 import com.danilo.blog.manager.models.User;
-import com.danilo.blog.manager.repository.store.IUserRepository;
+import com.danilo.blog.manager.repository.db.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.management.InstanceNotFoundException;
 
 @Service
 public class UserService extends CrudService<User, Long> {

@@ -3,7 +3,7 @@ package com.danilo.blog.manager.controllers;
 import com.danilo.blog.manager.dto.user.UserRequestDTO;
 import com.danilo.blog.manager.dto.user.UserResponseDTO;
 import com.danilo.blog.manager.models.User;
-import com.danilo.blog.manager.service.store.UserService;
+import com.danilo.blog.manager.service.UserService;
 import com.danilo.blog.manager.utils.Sorter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

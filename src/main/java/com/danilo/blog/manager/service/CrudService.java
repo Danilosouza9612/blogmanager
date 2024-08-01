@@ -1,4 +1,4 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.utils.Sorter;
 import org.springframework.data.domain.PageRequest;

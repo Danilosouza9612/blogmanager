@@ -1,7 +1,7 @@
 package com.danilo.blog.manager.policy;
 
 import com.danilo.blog.manager.models.UserBlogRole;
-import com.danilo.blog.manager.repository.store.IUserBlogRepository;
+import com.danilo.blog.manager.repository.db.IUserBlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.danilo.blog.manager.repository.store;
+package com.danilo.blog.manager.repository.db;
 
 import com.danilo.blog.manager.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

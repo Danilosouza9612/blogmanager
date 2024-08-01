@@ -1,7 +1,7 @@
-package com.danilo.blog.manager.service.store;
+package com.danilo.blog.manager.service;
 
 import com.danilo.blog.manager.models.Tag;
-import com.danilo.blog.manager.repository.store.ITagRepository;
+import com.danilo.blog.manager.repository.db.ITagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
