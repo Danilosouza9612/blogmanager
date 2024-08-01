@@ -1,31 +1,30 @@
 package com.danilo.blog.manager.repository.file;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.danilo.blog.manager.models.Blog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class S3StorageRepository implements IStorageRepository {
     private static final Logger logger = LoggerFactory.getLogger(S3StorageRepository.class);
     @Autowired
     private AmazonS3 amazonS3;
+
+    @Value("${app.storage.s3.bucketName}")
     private String bucketName;
 
-    public S3StorageRepository(String bucketName){
-        this.bucketName = bucketName;
-    }
+    @Value("${app.storage.s3.maxBuffer}")
+    private int readLimit;
 
     @Override
     public String upload(Blog blog, MultipartFile file) throws IOException {
@@ -41,7 +40,7 @@ public class S3StorageRepository implements IStorageRepository {
                 file.getInputStream(),
                 metadata
         );
-        putObjectRequest.getRequestClientOptions().setReadLimit(8388608);
+        putObjectRequest.getRequestClientOptions().setReadLimit(this.readLimit);
         logger.info("BUCKET: {}", putObjectRequest.getBucketName());
         amazonS3.putObject(putObjectRequest);
         return amazonS3.getUrl(this.bucketName, fileIdentifier(blog, file.getOriginalFilename())).toString();

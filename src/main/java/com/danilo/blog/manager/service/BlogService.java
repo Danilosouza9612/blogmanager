@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BlogService extends CrudService<Blog, Long> {
@@ -65,6 +66,19 @@ public class BlogService extends CrudService<Blog, Long> {
     }
 
     public String uploadFile(Blog blog, MultipartFile file) throws IOException {
+        ErrorSerialization errorSerialization = new ErrorSerialization();
+        if(file.getSize() > 10000000){
+            errorSerialization.addError("file","Image must not be bigger than 10MB");
+            throw new BusinessRuleViolationException(errorSerialization);
+        }
+        if(
+                !Objects.equals(file.getContentType(), "image/jpg") &&
+                !Objects.equals(file.getContentType(), "image/png") &&
+                !Objects.equals(file.getContentType(), "image/jpeg")
+        ){
+            errorSerialization.addError("file","Invalid image format");
+            throw new BusinessRuleViolationException(errorSerialization);
+        }
         return storageRepository.upload(blog, file);
     }
 

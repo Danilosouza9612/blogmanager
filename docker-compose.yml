@@ -29,7 +29,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
     volumes:
-      - autoparts-db:/var/lib/mysql
+      - app-db:/var/lib/mysql
     networks:
       - applocal
   local_stack:
@@ -38,15 +38,19 @@ services:
       - 4566:4566
       - 4571:4571
     environment:
-      - SERVICES=sns, sqs, s3, dynamodb
+      - SERVICES=s3
       - AWS_SECRET_KEY=test
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
+      - PERSISTENCE=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       applocal:
         ipv4_address: 168.0.0.20
 volumes:
-  autoparts-db:
+  app-db:
+  ls-vol:
 networks:
   applocal:
     ipam:

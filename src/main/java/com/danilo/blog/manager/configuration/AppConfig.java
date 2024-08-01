@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
     @Bean
     public IStorageRepository fileRepository(){
-        return new S3StorageRepository("blog-files");
+        return new S3StorageRepository();
     }
 }

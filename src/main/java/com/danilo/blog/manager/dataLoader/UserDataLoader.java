@@ -18,7 +18,7 @@ public class UserDataLoader implements CommandLineRunner {
     private IUserRepository repository;
     @Autowired
     private PasswordEncoder encoder;
-    @Value("{app.root.password")
+    @Value("${app.root.password}")
     private String rootPassword;
 
     @Override
@@ -29,11 +29,12 @@ public class UserDataLoader implements CommandLineRunner {
             LOGGER.info("CREATING ROOT USER");
             user.setRole(UserRole.ROOT);
             user.setEmail("root@app.com");
-            user.setPassword(encoder.encode("test@123"));
+            LOGGER.info("LOGGER ROOT PASSWORD: {}", this.rootPassword);
+            user.setPassword(encoder.encode(this.rootPassword));
             user.setName("Root user");
             user.setUsername("root");
             repository.save(user);
-            LOGGER.info("Root user created");
+            LOGGER.info("ROOT USER CREATED");
         }
     }
 }
