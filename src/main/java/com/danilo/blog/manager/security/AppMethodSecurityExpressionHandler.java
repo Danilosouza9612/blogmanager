@@ -17,12 +17,7 @@ public class AppMethodSecurityExpressionHandler extends DefaultMethodSecurityExp
         StandardEvaluationContext context = (StandardEvaluationContext) super.createEvaluationContext(authenticationSupplier, mi);
         MethodSecurityExpressionOperations methodSecurityExpressionOperations = (MethodSecurityExpressionOperations) context.getRootObject().getValue();
         BlogPermissionExpressionRoot root = new BlogPermissionExpressionRoot(methodSecurityExpressionOperations.getAuthentication());
-        try {
-            root.setUserBlogService((UserBlogService) getBeanResolver().resolve(context, "userBlogService"));
-            context.setRootObject(root);
-            return context;
-        } catch (AccessException e) {
-            throw new RuntimeException(e);
-        }
+        context.setRootObject(root);
+        return context;
     }
 }

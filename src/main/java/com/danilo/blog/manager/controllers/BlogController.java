@@ -58,7 +58,7 @@ public class BlogController {
         ).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PreAuthorize("permissionByBlog(@policyByBlogImp, #id, 'BLOG_ADMIN')")
     @PutMapping
     public ResponseEntity<BlogResponseDTO> update(@PathVariable("id") long id, @RequestBody BlogRequestDTO blogRequestDTO) throws InstanceNotFoundException {
         Optional<Blog> blogOptional = service.read(id);
@@ -74,7 +74,7 @@ public class BlogController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PreAuthorize("permissionByBlog(@policyByBlogImp, #id, 'BLOG_ADMIN')")
     @DeleteMapping
     public ResponseEntity<?> delete(@PathVariable("id") long id){
         service.deleteById(id);
@@ -82,7 +82,7 @@ public class BlogController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PreAuthorize("permissionByBlog(@policyByBlogImp, #id, 'BLOG_ADMIN')")
     @PostMapping("/{id}/uploadFile")
     public ResponseEntity<String> uploadFile(@PathVariable("id") long id, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         Optional<Blog> blogOptional = service.read(id);
@@ -92,7 +92,7 @@ public class BlogController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PreAuthorize("tenantPermission(#id, 'BLOG_ADMIN')")
+    @PreAuthorize("permissionByBlog(@policyByBlogImp, #id, 'BLOG_ADMIN')")
     @DeleteMapping("/{id}/deleteFile/{identifier}")
     public ResponseEntity<?> deleteFile(@PathVariable("id") long id, @PathVariable("identifier") String identifier){
         Optional<Blog> blogOptional = service.read(id);

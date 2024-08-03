@@ -1,8 +1,8 @@
 package com.danilo.blog.manager.controllers;
 
-import com.danilo.blog.manager.dto.blogContent.BlogContentRequestCreateDTO;
-import com.danilo.blog.manager.dto.blogContent.BlogContentRequestDTO;
-import com.danilo.blog.manager.dto.blogContent.BlogContentResponseDTO;
+import com.danilo.blog.manager.dto.page.PageRequestCreateDTO;
+import com.danilo.blog.manager.dto.page.PageRequestDTO;
+import com.danilo.blog.manager.dto.page.PageResponseDTO;
 import com.danilo.blog.manager.models.Page;
 import com.danilo.blog.manager.service.BlogService;
 import com.danilo.blog.manager.service.PageService;
@@ -26,19 +26,19 @@ public class PageController {
     private BlogService blogService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<BlogContentResponseDTO> show(@PathVariable("id") long id){
+    public ResponseEntity<PageResponseDTO> show(@PathVariable("id") long id){
         return service.read(id).map(page -> new ResponseEntity<>(this.buildResponseDtoFromPage(page), HttpStatus.OK)).orElseGet(()-> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PreAuthorize("permissionByBlog(@policyByBlogImp, #blogContentDTO, 'BLOG_ADMIN')")
     @PostMapping
-    public ResponseEntity<BlogContentRequestDTO> create(@RequestBody @Valid BlogContentRequestCreateDTO blogContentDTO){
+    public ResponseEntity<PageRequestDTO> create(@RequestBody @Valid PageRequestCreateDTO blogContentDTO){
         return new ResponseEntity<>(this.buildDtoFromPage(this.service.create(this.buildPageFromCreateDTO(blogContentDTO))), HttpStatus.CREATED);
     }
 
     @PreAuthorize("permissionByInstance(@policyByPage, #id, 'BLOG_ADMIN')")
     @PutMapping
-    public ResponseEntity<BlogContentRequestDTO> update(@PathVariable("id") long id, @RequestBody @Valid BlogContentRequestDTO blogContentDTO) throws InstanceNotFoundException {
+    public ResponseEntity<PageRequestDTO> update(@PathVariable("id") long id, @RequestBody @Valid PageRequestDTO blogContentDTO) throws InstanceNotFoundException {
         Optional<Page> pageOptional = service.read(id);
         Page page;
         if(pageOptional.isPresent()){
@@ -56,15 +56,15 @@ public class PageController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private Page buildPageFromDTO(BlogContentRequestDTO blogContentRequestDTO){
+    private Page buildPageFromDTO(PageRequestDTO blogContentRequestDTO){
         Page page = new Page();
         page.setContent(blogContentRequestDTO.getContent());
         page.setTitle(blogContentRequestDTO.getTitle());
         return page;
     }
 
-    private BlogContentRequestDTO buildDtoFromPage(Page page){
-        BlogContentRequestDTO blogContentDTO = new BlogContentRequestDTO();
+    private PageRequestDTO buildDtoFromPage(Page page){
+        PageRequestDTO blogContentDTO = new PageRequestDTO();
 
         blogContentDTO.setTitle(page.getTitle());
         blogContentDTO.setContent(page.getContent());
@@ -72,17 +72,17 @@ public class PageController {
         return blogContentDTO;
     }
 
-    private Page buildPageFromCreateDTO(BlogContentRequestCreateDTO blogContentCreateDTO){
+    private Page buildPageFromCreateDTO(PageRequestCreateDTO blogContentCreateDTO){
         Page page = this.buildPageFromDTO(blogContentCreateDTO);
         page.setBlog(blogService.getReferenceById(blogContentCreateDTO.getBlogId()));
         return page;
     }
 
-    private BlogContentResponseDTO buildResponseDtoFromPage(Page page){
-        return new BlogContentResponseDTO(page.getId(), page.getTitle(), page.getContent());
+    private PageResponseDTO buildResponseDtoFromPage(Page page){
+        return new PageResponseDTO(page.getId(), page.getTitle(), page.getContent());
     }
 
-    private void setPageFromDto(Page page, BlogContentRequestDTO blogContentRequestDTO){
+    private void setPageFromDto(Page page, PageRequestDTO blogContentRequestDTO){
         page.setTitle(blogContentRequestDTO.getTitle());
         page.setContent(blogContentRequestDTO.getContent());
     }

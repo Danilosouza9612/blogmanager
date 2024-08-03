@@ -10,6 +10,7 @@ import com.danilo.blog.manager.service.PostService;
 import com.danilo.blog.manager.service.TagService;
 import com.danilo.blog.manager.utils.Sorter;
 import jakarta.validation.Valid;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -113,6 +114,7 @@ public class PostController {
 
     private PostResponseDTO buildResponseDTOFromInstance(Post post){
         return new PostResponseDTO(
+                post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 new DisplayDTO(post.getCategory().getId(), post.getCategory().getName()),
@@ -130,6 +132,8 @@ public class PostController {
         post.setBlog(this.blogService.getReferenceById(dto.getBlogId()));
         post.setCategory(this.categoryService.getReferenceById(dto.getCategoryId()));
         post.setTags(dto.getTags().stream().map(this::tagMapperFromDto).toList());
+
+        LoggerFactory.getLogger(PostController.class).info(post.getContent());
 
         return post;
     }

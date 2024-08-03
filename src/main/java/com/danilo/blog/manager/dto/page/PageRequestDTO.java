@@ -1,4 +1,4 @@
-package com.danilo.blog.manager.dto.blogContent;
+package com.danilo.blog.manager.dto.page;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BlogContentRequestDTO {
+public class PageRequestDTO {
     @NotNull
     @NotBlank
     @Size(max = 255)

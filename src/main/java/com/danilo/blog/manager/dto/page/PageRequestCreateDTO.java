@@ -1,4 +1,4 @@
-package com.danilo.blog.manager.dto.blogContent;
+package com.danilo.blog.manager.dto.page;
 
 import com.danilo.blog.manager.policy.BloggablePolicy;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BlogContentRequestCreateDTO extends BlogContentRequestDTO implements BloggablePolicy {
+public class PageRequestCreateDTO extends PageRequestDTO implements BloggablePolicy {
     @NotNull
     private Long blogId;
 }
